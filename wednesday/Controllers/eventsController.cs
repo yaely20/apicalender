@@ -8,36 +8,45 @@ namespace wednesday.Controllers
     [ApiController]
     public class eventsController : ControllerBase
     {
+        static List<Event> events = new List<Event> { new Event { Id = 1, Title = "default event1", Start = DateTime.Now }, new Event { Id = 2, Title = "default event2", Start = DateTime.Now }, new Event { Id = 3, Title = "default event3", Start = DateTime.Now } };
+        static int count = 3;
         // GET: api/<eventsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Event> Get()
         {
-            return new string[] { "value1", "value2" };
+            return events;
         }
 
         // GET api/<eventsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //[HttpGet]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST api/<eventsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Event eve)
         {
+            events.Add(new Event { Id = count++, Title = eve.Title, Start = eve.Start });
+
         }
 
         // PUT api/<eventsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Event eve)
         {
+            var ev = events.Find(e => e.Id == id);
+            ev.Title = eve.Title;
+            ev.Start = eve.Start;
         }
 
         // DELETE api/<eventsController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            var eve = events.Find(e => e.Id == id);
+            events.Remove(eve);
         }
     }
 }
